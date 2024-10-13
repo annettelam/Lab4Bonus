@@ -8,7 +8,7 @@
 <body>
     <div class="container">
         <h1>Dictionary Search</h1>
-        <input type="text" id="searchInput" class="search-input" placeholder="Enter a word" required>
+        <input type="text" id="searchInput" class="search-input" placeholder="Enter a word" pattern=".*\S+.*" required>
         <button onclick="search()">Search</button>
         <div id="responseArea"></div>
     </div>

@@ -7,16 +7,16 @@
 
 <body>
     <h1>Dictionary Storing</h1>
-    <form id="store-form">
+    <form onsubmit="createDefinition(event)">
         <label for="word">Word:</label>
         <input type="text" id="word" name="word" required><br><br>
-    
+
         <label for="definition">Definition:</label>
         <textarea id="definition" name="definition" rows="4" cols="50" required></textarea><br><br>
-    
+
         <input type="submit" value="Create Definition">
     </form>
-    
+
     <div id="responseDiv"></div>
 
     <script src="js/store.js"></script>
