@@ -1,7 +1,9 @@
+import { strings } from "./lang/en.js"; // Import the localized strings
+
 document
   .getElementById("searchForm")
   .addEventListener("submit", async function (event) {
-    event.preventDefault(); // Prevent the default form submission behavior
+    event.preventDefault();
 
     const searchWord = document.getElementById("searchWord").value.trim();
     const result = document.getElementById("result");
@@ -11,8 +13,7 @@ document
 
     if (!isValidSearch) {
       result.style.color = "red";
-      result.textContent =
-        "Invalid input. Only letters and spaces are allowed, and the field cannot be empty.";
+      result.textContent = strings.invalidInputSearch;
       return;
     }
 
@@ -22,7 +23,6 @@ document
           searchWord
         )}`,
         {
-          // Updated hosted API endpoint
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -33,23 +33,23 @@ document
       const data = await response.json();
 
       if (response.status === 200) {
-        // Word found
         result.style.color = "green";
-        result.innerHTML = `<strong>${data.word}:</strong> ${data.definition}<br>Request #${data.requestNumber}`;
+        result.innerHTML = strings.wordFound
+          .replace("{word}", data.word)
+          .replace("{definition}", data.definition)
+          .replace("{requestNumber}", data.requestNumber);
       } else if (response.status === 404) {
-        // Word not found
         result.style.color = "orange";
-        result.textContent = `Request #${data.requestNumber}, word '${searchWord}' not found!`;
+        result.textContent = strings.wordNotFound
+          .replace("{word}", searchWord)
+          .replace("{requestNumber}", data.requestNumber);
       } else {
-        // Other errors
         result.style.color = "red";
-        result.textContent =
-          data.message || "An error occurred while searching for the word.";
+        result.textContent = data.message || strings.otherErrorSearch;
       }
     } catch (error) {
       result.style.color = "red";
-      result.textContent =
-        "Failed to connect to the server. Please ensure Server 2 is running.";
+      result.textContent = strings.serverError;
       console.error("Error:", error);
     }
   });
