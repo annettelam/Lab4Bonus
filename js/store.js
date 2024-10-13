@@ -18,7 +18,7 @@ class DictionaryDefinition {
         }
 
         try {
-            const response = await fetch('https://lab4-server.vercel.app/?=', {
+            const response = await fetch('http://your_droplet_ip:3000/', {  // Replace with actual Droplet IP
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -41,7 +41,6 @@ class DictionaryDefinition {
 }
 
 const dictionaryDefinition = new DictionaryDefinition();
-
 document.querySelector('form').addEventListener('submit', (event) => {
     dictionaryDefinition.createDefinition(event);
 });

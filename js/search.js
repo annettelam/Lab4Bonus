@@ -8,7 +8,7 @@ class DictionarySearch {
         const searchTerm = this.searchInput.value.toLowerCase();
 
         try {
-            const response = await fetch(`https://lab4-server.vercel.app/?word=${searchTerm}`, {
+            const response = await fetch(`http://your_droplet_ip:3000/?word=${searchTerm}`, {  // Replace with actual Droplet IP
                 method: 'GET',
             });
             const data = await response.json();
@@ -31,7 +31,6 @@ class DictionarySearch {
 }
 
 const dictionarySearch = new DictionarySearch();
-
 document.querySelector('button').addEventListener('click', () => {
     dictionarySearch.search();
 });
