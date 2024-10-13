@@ -1,3 +1,43 @@
+// The solution presented here was generated with the assistance of ChatGPT-3.5
+// (https://chat.openai.com/), an AI model by OpenAI, to help implement and optimize this code.
+
+const http = require("http");
+const url = require("url");
+
+const hostname = "0.0.0.0"; // Listen on all available interfaces
+const port = 3002; // You can choose any available port
+
+// In-memory dictionary
+const dictionary = [];
+let requestCount = 0;
+
+// Helper function to parse JSON body
+const parseRequestBody = (req) => {
+  return new Promise((resolve, reject) => {
+    let body = "";
+    req.on("data", (chunk) => {
+      body += chunk.toString();
+    });
+    req.on("end", () => {
+      try {
+        const parsed = JSON.parse(body);
+        resolve(parsed);
+      } catch (e) {
+        reject(e);
+      }
+    });
+  });
+};
+
+// Helper function to validate input
+const isValidString = (str) => {
+  return (
+    typeof str === "string" &&
+    str.trim().length > 0 &&
+    /^[A-Za-z\s]+$/.test(str)
+  );
+};
+
 const server = http.createServer(async (req, res) => {
   const parsedUrl = url.parse(req.url, true);
   const pathname = parsedUrl.pathname;
@@ -14,55 +54,39 @@ const server = http.createServer(async (req, res) => {
     return;
   }
 
-  // Handle GET requests to /api/definitions
   if (pathname === "/api/definitions" && req.method === "GET") {
     requestCount++;
     const word = query.word;
 
-    if (word) {
-      // If a word is provided, search for the word definition
-      if (!isValidString(word)) {
-        res.writeHead(400, { "Content-Type": "application/json" });
-        res.end(JSON.stringify({ message: "Invalid word parameter." }));
-        return;
-      }
+    if (!isValidString(word)) {
+      res.writeHead(400, { "Content-Type": "application/json" });
+      res.end(JSON.stringify({ message: "Invalid word parameter." }));
+      return;
+    }
 
-      const entry = dictionary.find(
-        (item) => item.word.toLowerCase() === word.toLowerCase()
-      );
+    const entry = dictionary.find(
+      (item) => item.word.toLowerCase() === word.toLowerCase()
+    );
 
-      if (entry) {
-        res.writeHead(200, { "Content-Type": "application/json" });
-        res.end(
-          JSON.stringify({
-            requestNumber: requestCount,
-            word: entry.word,
-            definition: entry.definition,
-          })
-        );
-      } else {
-        res.writeHead(404, { "Content-Type": "application/json" });
-        res.end(
-          JSON.stringify({
-            requestNumber: requestCount,
-            message: `Word '${word}' not found!`,
-          })
-        );
-      }
-    } else {
-      // If no word is provided, return all definitions
+    if (entry) {
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(
         JSON.stringify({
           requestNumber: requestCount,
-          totalEntries: dictionary.length,
-          definitions: dictionary,
+          word: entry.word,
+          definition: entry.definition,
+        })
+      );
+    } else {
+      res.writeHead(404, { "Content-Type": "application/json" });
+      res.end(
+        JSON.stringify({
+          requestNumber: requestCount,
+          message: `Word '${word}' not found!`,
         })
       );
     }
-  }
-  // Handle POST requests to /api/definitions
-  else if (pathname === "/api/definitions" && req.method === "POST") {
+  } else if (pathname === "/api/definitions" && req.method === "POST") {
     requestCount++;
     try {
       const body = await parseRequestBody(req);
@@ -111,4 +135,8 @@ const server = http.createServer(async (req, res) => {
     res.writeHead(404, { "Content-Type": "application/json" });
     res.end(JSON.stringify({ message: "Endpoint not found." }));
   }
+});
+
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
 });
