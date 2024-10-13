@@ -15,7 +15,7 @@ const server = http.createServer((req, res) => {
     const pathname = parsedUrl.pathname;
 
     // Handle CORS
-    res.setHeader('Access-Control-Allow-Origin', 'https://comp4735-lab4-bonus.vercel.app/');
+    res.setHeader('Access-Control-Allow-Origin', 'https://lab4-client.netlify.app/');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 

@@ -18,7 +18,7 @@ class DictionaryDefinition {
         }
 
         try {
-            const response = await fetch('https://<your-vercel-deployment-url>/', {
+            const response = await fetch('https://lab4-server.vercel.app/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

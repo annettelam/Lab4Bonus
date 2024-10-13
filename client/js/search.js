@@ -8,7 +8,7 @@ class DictionarySearch {
         const searchTerm = this.searchInput.value.toLowerCase();
 
         try {
-            const response = await fetch(`https://<your-vercel-deployment-url>/?word=${searchTerm}`, {
+            const response = await fetch(`https://lab4-server.vercel.app/?word=${searchTerm}`, {
                 method: 'GET',
             });
             const data = await response.json();
