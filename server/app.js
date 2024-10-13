@@ -1,19 +1,24 @@
 const http = require('http');
 const url = require('url');
+
+// Initialize dictionary and request counter
 const dictionary = [];
 let requestCount = 0;
 
-const messages = require('./messages');
+// Handle CORS for client on Netlify
+const handleCors = (res) => {
+    res.setHeader('Access-Control-Allow-Origin', 'https://lab4-client.netlify.app');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+};
 
 const server = http.createServer((req, res) => {
     const parsedUrl = url.parse(req.url, true);
     const method = req.method;
     const pathname = parsedUrl.pathname;
 
-    // Handle CORS headers
-    res.setHeader('Access-Control-Allow-Origin', 'https://lab4-client.netlify.app'); // Allow your Netlify client
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
-    res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
+    // Set CORS headers
+    handleCors(res);
 
     // Handle preflight OPTIONS request
     if (method === 'OPTIONS') {
@@ -27,8 +32,9 @@ const server = http.createServer((req, res) => {
     } else if (method === 'POST' && pathname === '/') {
         handlePostRequest(req, res);
     } else {
+        // Handle invalid routes
         res.writeHead(404, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ message: messages.notFound }));
+        res.end(JSON.stringify({ message: 'Not Found' }));
     }
 });
 
@@ -42,7 +48,7 @@ function handleGetRequest(req, res, parsedUrl) {
 
     if (!word || /\d/.test(word)) {
         res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ message: messages.invalidWordInput }));
+        res.end(JSON.stringify({ message: 'Invalid word input (no numbers allowed).' }));
         return;
     }
 
@@ -58,7 +64,7 @@ function handleGetRequest(req, res, parsedUrl) {
         res.writeHead(404, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({
             requestCount,
-            message: `Request #${requestCount}, word '${word}' not found!`
+            message: `Word '${word}' not found!`
         }));
     }
 }
@@ -76,7 +82,7 @@ function handlePostRequest(req, res) {
 
             if (!word || !definition || /\d/.test(word)) {
                 res.writeHead(400, { 'Content-Type': 'application/json' });
-                res.end(JSON.stringify({ message: messages.invalidInput }));
+                res.end(JSON.stringify({ message: 'Invalid input (please provide a valid word and definition).' }));
                 return;
             }
 
@@ -93,7 +99,7 @@ function handlePostRequest(req, res) {
                 dictionary.push({ word, definition });
                 res.writeHead(201, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({
-                    message: 'New entry recorded:',
+                    message: 'New entry recorded.',
                     entry: { word, definition },
                     requestCount,
                     totalEntries: dictionary.length
@@ -101,7 +107,7 @@ function handlePostRequest(req, res) {
             }
         } catch (err) {
             res.writeHead(400, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ message: messages.invalidJSON }));
+            res.end(JSON.stringify({ message: 'Invalid JSON input.' }));
         }
     });
 }
