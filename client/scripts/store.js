@@ -1,3 +1,5 @@
+import { strings } from "../lang/en"; // Import the localized strings
+
 document
   .getElementById("storeForm")
   .addEventListener("submit", async function (event) {

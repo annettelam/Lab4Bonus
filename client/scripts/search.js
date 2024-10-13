@@ -1,5 +1,4 @@
-import { strings } from "./lang/en.js"; // Import the localized strings
-
+import { strings } from "../lang/en"; // Import the localized strings
 document
   .getElementById("searchForm")
   .addEventListener("submit", async function (event) {
