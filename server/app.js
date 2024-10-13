@@ -1,21 +1,17 @@
-// server/app.js
 const http = require('http');
 const url = require('url');
+const dictionary = [];
+let requestCount = 0;
 
-const dictionary = []; // Array to store word definitions
-let requestCount = 0;  // Counter for the number of requests
-
-// Import user-facing strings
 const messages = require('./messages');
 
 const server = http.createServer((req, res) => {
-    requestCount++;
     const parsedUrl = url.parse(req.url, true);
     const method = req.method;
     const pathname = parsedUrl.pathname;
 
-    // Handle CORS
-    res.setHeader('Access-Control-Allow-Origin', 'https://lab4-client.netlify.app/');
+    // Handle CORS headers
+    res.setHeader('Access-Control-Allow-Origin', 'https://lab4-client.netlify.app'); // Allow your Netlify client
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
@@ -26,14 +22,11 @@ const server = http.createServer((req, res) => {
         return;
     }
 
-    if (method === 'GET' && pathname === '/api/definitions/') {
-        // Handle GET request
+    if (method === 'GET' && pathname === '/') {
         handleGetRequest(req, res, parsedUrl);
-    } else if (method === 'POST' && pathname === '/api/definitions') {
-        // Handle POST request
+    } else if (method === 'POST' && pathname === '/') {
         handlePostRequest(req, res);
     } else {
-        // Handle invalid routes
         res.writeHead(404, { 'Content-Type': 'application/json' });
         res.end(JSON.stringify({ message: messages.notFound }));
     }
@@ -81,7 +74,6 @@ function handlePostRequest(req, res) {
         try {
             const { word, definition } = JSON.parse(body);
 
-            // Input validation
             if (!word || !definition || /\d/.test(word)) {
                 res.writeHead(400, { 'Content-Type': 'application/json' });
                 res.end(JSON.stringify({ message: messages.invalidInput }));
