@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Store Word Definition</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    .container { max-width: 500px; margin: auto; }
+    input, textarea { width: 100%; padding: 10px; margin: 5px 0; }
+    button { padding: 10px 20px; }
+    .feedback { margin-top: 10px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Add a New Word</h1>
+    <form id="storeForm">
+      <label for="word">Word:</label>
+      <input type="text" id="word" name="word" required>
+
+      <label for="definition">Definition:</label>
+      <textarea id="definition" name="definition" rows="4" required></textarea>
+
+      <button type="submit">Submit</button>
+    </form>
+    <div class="feedback" id="feedback"></div>
+  </div>
+
+  <script src="scripts/store.js"></script>
+</body>
+</html>
