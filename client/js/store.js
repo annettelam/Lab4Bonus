@@ -1,26 +1,46 @@
-// client/js/store.js
-document.getElementById('store-form').addEventListener('submit', function (event) {
-    event.preventDefault();
-
-    const word = document.getElementById('word').value.trim();
-    const definition = document.getElementById('definition').value.trim();
-
-    // Simple input validation
-    if (!word || !definition || /\d/.test(word)) {
-        alert('Please enter a valid word and definition (no numbers).');
-        return;
+class DictionaryDefinition {
+    constructor() {
+        this.wordInput = document.getElementById("word");
+        this.definitionInput = document.getElementById("definition");
+        this.responseDiv = document.getElementById("responseDiv");
     }
 
-    fetch('https://yourDomainName2.wyz/api/definitions', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ word, definition })
-    })
-        .then(response => response.json())
-        .then(data => {
-            document.getElementById('response').innerText = JSON.stringify(data, null, 2);
-        })
-        .catch(error => console.error('Error:', error));
+    async createDefinition(event) {
+        event.preventDefault();
+
+        const word = this.wordInput.value.toLowerCase();
+        const definition = this.definitionInput.value;
+
+        // Check if the word contains any numbers
+        if (/\d/.test(word)) {
+            this.responseDiv.textContent = 'Word should not contain numbers.';
+            return;
+        }
+
+        try {
+            const response = await fetch('https://<your-vercel-deployment-url>/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ word, definition }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+                this.responseDiv.textContent = `Response: ${data.message}`;
+            } else {
+                const data = await response.json();
+                this.responseDiv.textContent = `Error: ${data.message}`;
+            }
+        } catch (error) {
+            console.error('Error creating definition:', error);
+            this.responseDiv.textContent = 'An error occurred while creating the definition.';
+        }
+    }
+}
+
+const dictionaryDefinition = new DictionaryDefinition();
+document.querySelector('form').addEventListener('submit', (event) => {
+    dictionaryDefinition.createDefinition(event);
 });
