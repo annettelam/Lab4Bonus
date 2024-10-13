@@ -1,5 +1,3 @@
-// server1/scripts/store.js
-
 document
   .getElementById("storeForm")
   .addEventListener("submit", async function (event) {
@@ -21,8 +19,8 @@ document
     }
 
     try {
-      const response = await fetch("http://localhost:3002/api/definitions", {
-        // Localhost endpoint
+      const response = await fetch("https://cadan.xyz/app3/api/definitions", {
+        // Updated to use hosted API
         method: "POST",
         headers: {
           "Content-Type": "application/json",

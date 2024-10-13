@@ -1,5 +1,3 @@
-// server1/scripts/search.js
-
 document
   .getElementById("searchForm")
   .addEventListener("submit", async function (event) {
@@ -20,11 +18,11 @@ document
 
     try {
       const response = await fetch(
-        `http://localhost:3002/api/definitions?word=${encodeURIComponent(
+        `https://cadan.xyz/app3/api/definitions?word=${encodeURIComponent(
           searchWord
         )}`,
         {
-          // Localhost endpoint
+          // Updated hosted API endpoint
           method: "GET",
           headers: {
             "Content-Type": "application/json",
