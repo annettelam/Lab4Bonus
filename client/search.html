@@ -1,19 +1,19 @@
-<!-- client/search.html -->
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Search Definition</title>
-    <link rel="stylesheet" href="css/styles.css">
+    <title>search.html (Server1)</title>
 </head>
+
 <body>
-    <h1>Search for a Definition</h1>
-    <form id="search-form">
-        <label for="search-word">Word:</label><br>
-        <input type="text" id="search-word" name="search-word" required><br><br>
-        <button type="submit">Search</button>
-    </form>
-    <div id="search-result"></div>
+    <div class="container">
+        <h1>Dictionary Search</h1>
+        <input type="text" id="searchInput" class="search-input" placeholder="Enter a word" required>
+        <button onclick="search()">Search</button>
+        <div id="responseArea"></div>
+    </div>
 
     <script src="js/search.js"></script>
 </body>
+
 </html>

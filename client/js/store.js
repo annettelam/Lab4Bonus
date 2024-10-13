@@ -2,7 +2,7 @@ class DictionaryDefinition {
     constructor() {
         this.wordInput = document.getElementById("word");
         this.definitionInput = document.getElementById("definition");
-        this.responseDiv = document.getElementById("response");
+        this.responseDiv = document.getElementById("responseDiv");
     }
 
     async createDefinition(event) {
@@ -18,7 +18,7 @@ class DictionaryDefinition {
         }
 
         try {
-            const response = await fetch('https://lab4-server.vercel.app/', { // Use your Vercel URL
+            const response = await fetch('https://lab4-server.vercel.app/', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

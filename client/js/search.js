@@ -8,15 +8,15 @@ class DictionarySearch {
         const searchTerm = this.searchInput.value.toLowerCase();
 
         try {
-            const response = await fetch(`https://lab4-server.vercel.app/?word=${searchTerm}`, { // Use your Vercel URL
+            const response = await fetch(`https://lab4-server.vercel.app/?word=${searchTerm}`, {
                 method: 'GET',
             });
             const data = await response.json();
 
             if (response.ok) {
-                if (data.entry) {
+                if (data.definition) {
                     this.responseArea.innerHTML = `
-                    <p>Definition of <span class="response">${searchTerm}</span>: ${data.entry.definition}</p>
+                    <p>Definition of <span class="response">${searchTerm}</span>: ${data.definition}</p>
                     <p>Total server requests: ${data.requestCount}</p>`;
                 } else {
                     this.responseArea.innerHTML = `<p>Error: Definition not found for ${searchTerm}</p>`;
