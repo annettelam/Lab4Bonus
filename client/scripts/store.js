@@ -21,7 +21,7 @@ document
     }
 
     try {
-      const response = await fetch("http://localhost:3000/api/definitions", {
+      const response = await fetch("http://localhost:3002/api/definitions", {
         // Localhost endpoint
         method: "POST",
         headers: {

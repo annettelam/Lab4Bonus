@@ -2,7 +2,7 @@ const http = require("http");
 const url = require("url");
 
 const hostname = "0.0.0.0"; // Listen on all available interfaces
-const port = 3000; // You can choose any available port
+const port = 3002; // You can choose any available port
 
 // In-memory dictionary
 const dictionary = [];

@@ -20,7 +20,7 @@ document
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/definitions?word=${encodeURIComponent(
+        `http://localhost:3002/api/definitions?word=${encodeURIComponent(
           searchWord
         )}`,
         {
